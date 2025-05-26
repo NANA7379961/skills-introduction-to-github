@@ -1,0 +1,40 @@
+// 正十二面体建模Journal（边长100）
+Session()->Start("Create Dodecahedron");
+Part* workPart = (Part*)Session()->TheWorkspace()->ActivePart();
+ModelingUtil* modelingUtil = workPart->ModelingUtil();
+ 
+// 定义黄金比例常数 
+const double phi = (1 + sqrt(5)) / 2;
+const double k = 100 / 1.2360679775; // 缩放因子 
+ 
+// 创建所有顶点（20个）
+Point3d* vertices[20]();
+vertices[0]()  = modelingUtil->CreatePoint(k, k, k);
+vertices[1]()  = modelingUtil->CreatePoint(-k, k, k);
+vertices[2]()  = modelingUtil->CreatePoint(k, -k, k);
+vertices[3]()  = modelingUtil->CreatePoint(k, k, -k);
+vertices[4]()  = modelingUtil->CreatePoint(-k, -k, k);
+vertices[5]()  = modelingUtil->CreatePoint(-k, k, -k);
+vertices[6]()  = modelingUtil->CreatePoint(k, -k, -k);
+vertices[7]()  = modelingUtil->CreatePoint(-k, -k, -k);
+vertices[8]()  = modelingUtil->CreatePoint(0, phi*k, (1/phi)*k);
+vertices[9]()  = modelingUtil->CreatePoint(0, -phi*k, (1/phi)*k);
+vertices[10]()  = modelingUtil->CreatePoint(0, phi*k, -(1/phi)*k);
+vertices[11]()  = modelingUtil->CreatePoint(0, -phi*k, -(1/phi)*k);
+vertices[12]()  = modelingUtil->CreatePoint((1/phi)*k, 0, phi*k);
+vertices[13]()  = modelingUtil->CreatePoint(-(1/phi)*k, 0, phi*k);
+vertices[14]()  = modelingUtil->CreatePoint((1/phi)*k, 0, -phi*k);
+vertices[15]()  = modelingUtil->CreatePoint(-(1/phi)*k, 0, -phi*k);
+vertices[16]()  = modelingUtil->CreatePoint(phi*k, (1/phi)*k, 0);
+vertices[17]()  = modelingUtil->CreatePoint(-phi*k, (1/phi)*k, 0);
+vertices[18]()  = modelingUtil->CreatePoint(phi*k, -(1/phi)*k, 0);
+vertices[19]()  = modelingUtil->CreatePoint(-phi*k, -(1/phi)*k, 0);
+ 
+// 创建12个五边形面
+Face* faces[12]();
+faces[0]()  = modelingUtil->CreateFace(vertices[0](), vertices[8](), vertices[16](), vertices[12](), vertices[10]()[1]() = modelingUtil->CreateFace(vertices[0](), vertices[16](), vertices[18](), vertices[14](), vertices[6]()[2]() = modelingUtil->CreateFace(vertices[0](), vertices[10](), vertices[14](), vertices[18](), vertices[2]()[3]() = modelingUtil->CreateFace(vertices[0](), vertices[2](), vertices[12](), vertices[8](), vertices[0]()[4]() = modelingUtil->CreateFace(vertices[1](), vertices[9](), vertices[17](), vertices[13](), vertices[11]()[5]() = modelingUtil->CreateFace(vertices[1](), vertices[17](), vertices[19](), vertices[15](), vertices[5]()[6]() = modelingUtil->CreateFace(vertices[1](), vertices[11](), vertices[15](), vertices[19](), vertices[3]()[7]() = modelingUtil->CreateFace(vertices[1](), vertices[3](), vertices[13](), vertices[9](), vertices[1]()[8]() = modelingUtil->CreateFace(vertices[4](), vertices[10](), vertices[14](), vertices[18](), vertices[6]()[9]() = modelingUtil->CreateFace(vertices[4](), vertices[6](), vertices[16](), vertices[12](), vertices[8]()[10]() = modelingUtil->CreateFace(vertices[4](), vertices[8](), vertices[17](), vertices[9](), vertices[7]()[11]() = modelingUtil->CreateFace(vertices[4](), vertices[7](), vertices[19](), vertices[15](), vertices[11]);
+ 
+// 组合面为实体
+Body* dodecahedron = modelingUtil->CombineFacesToBody(faces, 12);
+ 
+Session()->End();
